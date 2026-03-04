@@ -1,0 +1,17 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-LuaRapidjson.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:/UEProject/UnLuaTPS/Intermediate/Build/Win64/x64/UnLuaLessionEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.InclOrderUnreal5_4.h.obj"
+"C:/UEProject/UnLuaTPS/Plugins/UnLuaExtensions/LuaRapidjson/Intermediate/Build/Win64/x64/UnrealEditor/Development/LuaRapidjson/LuaRapidjsonModule.cpp.obj"
+"C:/UEProject/UnLuaTPS/Plugins/UnLuaExtensions/LuaRapidjson/Intermediate/Build/Win64/x64/UnrealEditor/Development/LuaRapidjson/Document.cpp.obj"
+"C:/UEProject/UnLuaTPS/Plugins/UnLuaExtensions/LuaRapidjson/Intermediate/Build/Win64/x64/UnrealEditor/Development/LuaRapidjson/rapidjson.cpp.obj"
+"C:/UEProject/UnLuaTPS/Plugins/UnLuaExtensions/LuaRapidjson/Intermediate/Build/Win64/x64/UnrealEditor/Development/LuaRapidjson/Schema.cpp.obj"
+"C:/UEProject/UnLuaTPS/Plugins/UnLuaExtensions/LuaRapidjson/Intermediate/Build/Win64/x64/UnrealEditor/Development/LuaRapidjson/values.cpp.obj"
+"C:/UEProject/UnLuaTPS/Plugins/UnLuaExtensions/LuaRapidjson/Intermediate/Build/Win64/x64/UnrealEditor/Development/LuaRapidjson/PerModuleInline.gen.cpp.obj"
+"C:/UEProject/UnLuaTPS/Plugins/UnLuaExtensions/LuaRapidjson/Intermediate/Build/Win64/x64/UnrealEditor/Development/LuaRapidjson/Default.rc2.res"
+/OUT:"C:/UEProject/UnLuaTPS/Plugins/UnLuaExtensions/LuaRapidjson/Intermediate/Build/Win64/x64/UnrealEditor/Development/LuaRapidjson/UnrealEditor-LuaRapidjson.lib"

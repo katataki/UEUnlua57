@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ueproject\\unluatps\\plugins\\unlua\\source\\unluaeditor\\private\\unluaaboutscreen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ueproject\\unluatps\\intermediate\\build\\win64\\x64\\unlualessioneditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.inclorderunreal5_4.h.pch",
+        "Includes": [
+            "c:\\ueproject\\unluatps\\plugins\\unlua\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unluaeditor\\definitions.unluaeditor.h",
+            "c:\\ueproject\\unluatps\\plugins\\unlua\\source\\unluaeditor\\private\\unluaaboutscreen.h",
+            "c:\\program files\\epic games\\ue_5.7\\engine\\source\\runtime\\core\\public\\misc\\engineversioncomparison.h",
+            "c:\\program files\\epic games\\ue_5.7\\engine\\source\\editor\\editorstyle\\public\\editorstyleset.h",
+            "c:\\ueproject\\unluatps\\plugins\\unlua\\source\\unluaeditor\\private\\unluaeditorfunctionlibrary.h",
+            "c:\\program files\\epic games\\ue_5.7\\engine\\source\\developer\\directorywatcher\\public\\idirectorywatcher.h",
+            "c:\\ueproject\\unluatps\\plugins\\unlua\\intermediate\\build\\win64\\unrealeditor\\inc\\unluaeditor\\uht\\unluaeditorfunctionlibrary.generated.h",
+            "c:\\ueproject\\unluatps\\plugins\\unlua\\source\\unluaeditor\\private\\unluaeditorstyle.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

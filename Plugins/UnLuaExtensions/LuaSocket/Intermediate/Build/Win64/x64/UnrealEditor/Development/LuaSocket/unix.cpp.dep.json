@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ueproject\\unluatps\\plugins\\unluaextensions\\luasocket\\source\\src\\unix.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ueproject\\unluatps\\intermediate\\build\\win64\\x64\\unlualessioneditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.inclorderunreal5_4.h.pch",
+        "Includes": [
+            "c:\\ueproject\\unluatps\\plugins\\unluaextensions\\luasocket\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\luasocket\\definitions.luasocket.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
