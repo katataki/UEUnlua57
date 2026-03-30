@@ -36,6 +36,10 @@ end
 
 --function BP_PlayerController_C:ReceiveActorEndOverlap(OtherActor)
 --end
+
+--
+--输入绑定（老版本输入映射，函数名与配置的操作映射和轴映射对应）
+--
 function BP_PlayerController_C:MoveForward(AxisValue)
     if self.Pawn then
         local Rotation = self:GetControlRotation(self.ControlRot)

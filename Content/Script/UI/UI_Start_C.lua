@@ -131,12 +131,14 @@ end
 
 function UI_Start_C:OnClickCreate()
     local GameInstance = UE4.UGameplayStatics.GetGameInstance(self)
+    --创建房间的设置为服务器
     GameInstance.PlayerInfo.Status = 'Server'
     GameInstance.PlayerInfo.Name = self.txtPlayerName:GetText()
     local selectedIndex = self.ComboBoxTeam:GetSelectedIndex()
     GameInstance.PlayerInfo.Team = selectedIndex
     GameInstance.PlayerInfo.Prof = self.SelectedPorfIndex
 
+    -- 创建新UI,新UI加到视口，视口中把当前UI移除
     local UCLass = UE4.UClass.Load('/Game/UI/UI_CreateRoom.UI_CreateRoom_C')
     if UCLass == nil then
         return
@@ -156,6 +158,7 @@ function UI_Start_C:OnClickJoin()
     GameInstance.PlayerInfo.Team = selectedIndex
     GameInstance.PlayerInfo.Prof = self.SelectedPorfIndex
 
+    print(GameInstance.PlayerInfo.Prof)
     local UCLass = UE4.UClass.Load('/Game/UI/UI_JoinRoom.UI_JoinRoom_C')
     if UCLass == nil then
         return

@@ -7,6 +7,7 @@
 --
 
 require "UnLua"
+require "GameMgr"
 
 local BP_GM_Lobby_C = Class()
 
@@ -71,17 +72,18 @@ function BP_GM_Lobby_C:Event_AddPlayerInfo_RPC(PlayerInfo)
     local Player = nil
     local BaseColor = {}
     BaseColor[0] = PlayerInfo.Prof
+
     Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
 
-    -- if PlayerInfo.Prof == 1 then
+    -- if PlayerInfo.Prof == 0 then
     --     Color = UE4.FLinearColor(1.0, 0, 0, 1.0)
-    --     -- Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
+    --     Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
     -- elseif PlayerInfo.Prof == 2 then
     --     Color = UE4.FLinearColor(0, 1.0, 0, 1.0)
-    --     -- Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
+    --     Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
     -- elseif PlayerInfo.Prof == 3 then
     --     Color = UE4.FLinearColor(0, 0, 1.0, 1.0)
-    --     -- Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
+    --     Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
     -- end
     
     -- local BaseColor = {}
@@ -90,7 +92,7 @@ function BP_GM_Lobby_C:Event_AddPlayerInfo_RPC(PlayerInfo)
     -- Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
     
     playerController:Possess(Player)
-    GameMgr:ShowGameInfo()
+    GameMgr:ShowGameInfo() 
 end
 
 function BP_GM_Lobby_C:K2_PostLogin(NewPlayer)
