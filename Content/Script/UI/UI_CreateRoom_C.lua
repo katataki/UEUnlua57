@@ -32,24 +32,29 @@ function UI_CreateRoom_C:OnClickCreate()
     if SelectedOption == "Lan" then
         bUseLan = true
     end
+    
+    print("Lan"..tostring(lan))
+    local PlayerController = UE4.UGameplayStatics.GetPlayerController(self, 0)
+    local SessionProxy = UE4.UCreateSessionCallbackProxy.CreateSession(self, PlayerController, GameInstance.MaxPlayer, bUseLan)
+    SessionProxy.OnSuccess:Add(self, UI_CreateRoom_C.OnSuccess)
+    SessionProxy.OnFailure:Add(self, UI_CreateRoom_C.OnFailure)
 
-    -- local PlayerController = UE4.UGameplayStatics.GetPlayerController(self, 0)
-    -- local SessionProxy = UE4.UCreateSessionCallbackProxy.CreateSession(self, PlayerController, GameInstance.MaxPlayer, bUseLan)
-    -- SessionProxy.OnSuccess:Add(self, UI_CreateRoom_C.OnSuccess)
-    -- SessionProxy.OnFailure = {self, UI_CreateRoom_C.OnFailure}
+    print("创建会话")
+    --UCreateSessionCallbackProxy 创建会话代理需要调用 Activate() 才会执行：
+    SessionProxy:Activate()
     -- 创建会话
-    self:CreateSession(GameInstance.MaxPlayer, bUseLan)
+    -- self:CreateSession(GameInstance.MaxPlayer, bUseLan)
 end
 
 function UI_CreateRoom_C:OnSuccess() 
     print('创建成功')
-    -- UE4.UGameplayStatics.OpenLevel(self, '/Game/Maps/MapLobby', true, 'listen')
+    UE4.UGameplayStatics.OpenLevel(self, '/Game/Maps/MapLobby', true, 'listen')
 
     -- 使用控制台命令执行 ServerTravel
-    local PC = self:GetOwningPlayer()
-    if PC then
-        PC:ExecuteConsoleCommand("ServerTravel /Game/Maps/MapLobby?listen")
-    end
+    -- local PC = self:GetOwningPlayer()
+    -- if PC then
+    --     PC:ExecuteConsoleCommand("ServerTravel /Game/Maps/MapLobby?listen")
+    -- end
         -- 获取 World 并使用 ServerTravel
     -- local World = self:GetWorld()
     -- if World then
@@ -66,7 +71,7 @@ end
 function UI_CreateRoom_C:OnFailure()
     print('创建失败')
 end
-
+ 
 --function UI_CreateRoom_C:Tick(MyGeometry, InDeltaTime)
 --end
 

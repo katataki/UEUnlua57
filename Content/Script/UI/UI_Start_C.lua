@@ -37,11 +37,12 @@ function UI_Start_C:Construct()
     end
     local PlayerClass = nil
     PlayerClass = UE4.UClass.Load(self.PreviewActorClass)
-    
+    --创建角色类，拍的RT作为按钮UI图片材质
     self:CreatePlayer(World, PlayerClass, UE4.FVector(5000000.0, -10000, 0), self.ProfData[0])
     self:CreatePlayer(World, PlayerClass, UE4.FVector(5000000.0, -20000, 0), self.ProfData[1])
     self:CreatePlayer(World, PlayerClass, UE4.FVector(5000000.0, -30000, 0), self.ProfData[2])
 
+    --绑定按下事件，默认选择角色0
     self.UI_Character_0.btnCharacter.OnPressed:Add(self, UI_Start_C.OnClickCharacter0)
     self.UI_Character_1.btnCharacter.OnPressed:Add(self, UI_Start_C.OnClickCharacter1)
     self.UI_Character_2.btnCharacter.OnPressed:Add(self, UI_Start_C.OnClickCharacter2)
@@ -129,9 +130,10 @@ function UI_Start_C:Init()
     end
 end
 
+--【创建房间】
 function UI_Start_C:OnClickCreate()
     local GameInstance = UE4.UGameplayStatics.GetGameInstance(self)
-    --创建房间的设置为服务器
+    --玩家是作为服务器
     GameInstance.PlayerInfo.Status = 'Server'
     GameInstance.PlayerInfo.Name = self.txtPlayerName:GetText()
     local selectedIndex = self.ComboBoxTeam:GetSelectedIndex()
@@ -150,15 +152,17 @@ function UI_Start_C:OnClickCreate()
     self:RemoveFromParent()
 end
 
+--【加入房间】
 function UI_Start_C:OnClickJoin()
     local GameInstance = UE4.UGameplayStatics.GetGameInstance(self)
+    --玩家是作为客户端
     GameInstance.PlayerInfo.Status = 'Client'
     GameInstance.PlayerInfo.Name = self.txtPlayerName:GetText()
     local selectedIndex = self.ComboBoxTeam:GetSelectedIndex()
     GameInstance.PlayerInfo.Team = selectedIndex
     GameInstance.PlayerInfo.Prof = self.SelectedPorfIndex
 
-    print(GameInstance.PlayerInfo.Prof)
+    -- 创建新UI,新UI加到视口，视口中把当前UI移除
     local UCLass = UE4.UClass.Load('/Game/UI/UI_JoinRoom.UI_JoinRoom_C')
     if UCLass == nil then
         return
