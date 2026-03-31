@@ -12,6 +12,7 @@ require "UnLua"
 
 local BP_player_M_C = Class()
 
+--Initializer是蓝图的配置
 function BP_player_M_C:Initialize(Initializer)
     if Initializer then
         -- self.BaseColor = Initializer[0]
@@ -23,13 +24,7 @@ end
 function BP_player_M_C:ReceiveBeginPlay()
     self.Life = 500
     self.MaxLife = 500
-    if self:HasAuthority() then
-        local Weapon = self:SpawnWeapon()
-        if Weapon then
-            Weapon:K2_AttachToComponent(self.Mesh, "RightHandSocket", UE4.EAttachmentRule.SnapToTarget,UE4.EAttachmentRule.SnapToTarget,UE4.EAttachmentRule.SnapToTarget)
-            self.Weapon = Weapon
-        end
-    end
+
     if self:HasAuthority() then
         if self.BaseColor ~= nil then
             self.Color = self.BaseColor
@@ -38,6 +33,19 @@ function BP_player_M_C:ReceiveBeginPlay()
             self.prof = self.InProf
         end
     end
+    if self:HasAuthority() then
+        local Weapon = self:SpawnWeapon()
+        if Weapon then
+            -- 按阵营改下武器颜色以标记
+            -- local MID = Weapon.Mesh:CreateDynamicMaterialInstance(0)
+	        -- if MID and self.Color then
+		    --     MID:SetVectorParameterValue("BodyColor", self.Color)
+            -- end
+            Weapon:K2_AttachToComponent(self.Mesh, "RightHandSocket", UE4.EAttachmentRule.SnapToTarget,UE4.EAttachmentRule.SnapToTarget,UE4.EAttachmentRule.SnapToTarget)
+            self.Weapon = Weapon
+        end
+    end
+  
     
     self.Mesh:SetAnimationMode(0)
     if self.prof == 1 then
@@ -65,8 +73,9 @@ end
 
 function BP_player_M_C:ChangeMesh(strMesh, strAnim)
     local Mesh = UE4.UObject.Load(strMesh)
-    self.Mesh.SkeletalMesh = Mesh
-    --self.Mesh:SetSkeletalMesh(Mesh)
+    --self.Mesh.SkeletalMesh = Mesh
+    self.Mesh:SetSkeletalMeshAsset(Mesh,false)
+
     local AnimAsset = UE4.UClass.Load(strAnim)
     self.Mesh.AnimAsset = AnimAsset
     --self.Mesh:SetAnimClass(AnimAsset)
