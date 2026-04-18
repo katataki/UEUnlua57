@@ -108,6 +108,7 @@ function BP_PlayerController_C:Aim_Released()
     --self.Pawn:UpdateAiming(false)
 end
 
+-- 调用BP_GM_Lobby的
 function BP_PlayerController_C:Event_AddPlayerInfo_RPC(PlayerInfo)
     local GameMode = UE4.UGameplayStatics.GetGameMode(self)
     if GameMode then
@@ -115,6 +116,7 @@ function BP_PlayerController_C:Event_AddPlayerInfo_RPC(PlayerInfo)
     end
 end
 
+--进入lobby地图，切换新玩家控制器，先初始化，调用到Event_AddPlayerInfo（rpc）转到上面
 function BP_PlayerController_C:Event_Init()
     local GameInstance = UE4.UGameplayStatics.GetGameInstance(self)
     self.PlayerInfo = GameInstance.PlayerInfo
@@ -132,15 +134,18 @@ function BP_PlayerController_C:ShowChat()
 end
 
 ---
---- RPC
+--- RPC 
 ---
 function BP_PlayerController_C:Event_UpateSelf_RPC(PlayerInfos, MapName, MaxPlayer)
+    print(MaxPlayer)
+    --Owning Client 只更新自己本地的，服务器传玩家信息到客户端
     if self.UILobby ~= nil then
         self.UILobby:Event_UpdateInfo(PlayerInfos, MaxPlayer, MapName)
     end
 end
 
 function BP_PlayerController_C:Event_UpdatePlayerInfo_RPC(PlayerInfo)
+    --Server
     local GameMode = UE4.UGameplayStatics.GetGameMode(self)
     if GameMode then
         GameMode:Event_UpdatePlayerInfo(PlayerInfo)
@@ -150,6 +155,7 @@ end
 function BP_PlayerController_C:Event_UpdateAllPlayer_RPC()
     local GameMode = UE4.UGameplayStatics.GetGameMode(self)
     if GameMode then
+        --让所有PlayerContoller都更新自己的数据
         GameMode:UpdateAllPlayer()
     end
 end

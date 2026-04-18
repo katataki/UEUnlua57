@@ -3,8 +3,17 @@
 -- @AUTHOR 天空游荡的鱼
 -- QQ:708888157
 --
-GameMgr = {}
-
+GameMgr = {
+    MAX_PLAYER_COUNT = 2,
+    Name = "www.ngcod.com",
+    IsPause = false,
+    CurrentGenNum = 0,
+    CurrentNum = 0,
+    Wave = 1,
+    MaxWave = 100,
+    MaxNum = 1
+}
+GameMgr.MAX_PLAYER_COUNT = 2
 
 function GameMgr:ShowGameInfo()
     print('')

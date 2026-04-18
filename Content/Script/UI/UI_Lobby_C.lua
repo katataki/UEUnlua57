@@ -24,6 +24,7 @@ function UI_Lobby_C:Construct()
         self.txtReadyText:SetText('准备')
     end
 
+    --绑定离开和开始按钮
     self.txtMapName:SetText(GameInstance.MapName)
     self.btnLeave.OnPressed:Add(self, UI_Lobby_C.OnClickLeave)
     self.btnReady.OnPressed:Add(self, UI_Lobby_C.OnClickReady)
@@ -31,11 +32,13 @@ function UI_Lobby_C:Construct()
     --UE4.UKismetSystemLibrary.K2_SetTimerDelegate({self, UI_Lobby_C.Event_UpdatePlayerList}, 2, true)
 end
 
+--离开房间
 function UI_Lobby_C:OnClickLeave()
     local Controller = self:GetOwningPlayer()
     Controller:Event_LeaveRoom()
 end
 
+--C：准备 S:开始
 function UI_Lobby_C:OnClickReady()
     -- 去准备
     if self.Status == 0 then
@@ -53,19 +56,23 @@ function UI_Lobby_C:OnClickReady()
         return
     end
 
+    --开始游戏
     if self.Status == 4 then
         local GameMode = UE4.UGameplayStatics.GetGameMode(self)
         if GameMode == nil then
             return
         end
+        --每个玩家都进加载页面
         local PlayerList = GameMode.PlayerList:ToTable()
         for index, value in ipairs(PlayerList) do
             value:Event_ShowLoading()
         end
+        --开始游戏
         GameMode:Event_Start()
     end
 end
 
+--更新玩家数据和准备状态
 function UI_Lobby_C:Event_UpdateInfo(PlayerInfos, MaxPlayer, MapName)
     self:Event_UpdatePlayerList(PlayerInfos)
     self:Event_UpdateReady(MaxPlayer, PlayerInfos)
@@ -88,6 +95,7 @@ function UI_Lobby_C:Event_UpdateReady(MaxPlayer, PlayerInfoList)
     local Status = Controller.PlayerInfo.Status
 
     if Status == "Server" then
+        print(PlayerInfoList:Length(),MaxPlayer)
         if PlayerInfoList:Length() == MaxPlayer then
             if self:CheckAllReady(PlayerInfoList) then
                 self.txtReadyText:SetText("开始游戏")

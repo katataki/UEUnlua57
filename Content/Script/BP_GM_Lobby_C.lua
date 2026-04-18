@@ -18,10 +18,12 @@ function BP_GM_Lobby_C:ReceiveBeginPlay()
 end
 
 function BP_GM_Lobby_C:Event_UpdatePlayerInfo_RPC(PlayerInfo)
+    --Server
     self:UpdatePlayerInfoLocal(PlayerInfo)
     self:UpdateAllPlayer()
 end
 
+--更新到最新的PlayerInfo到GM里的PlayerInfo,玩家信息和准备状态
 function BP_GM_Lobby_C:UpdatePlayerInfoLocal(PlayerInfo)
     local TablePlayer = self.PlayerInfoList:ToTable()
     for index, value in ipairs(TablePlayer) do
@@ -34,12 +36,16 @@ function BP_GM_Lobby_C:UpdatePlayerInfoLocal(PlayerInfo)
 end
 
 function BP_GM_Lobby_C:SetMapName()
+    --GameInstance的MapName是创建的联网房间名
     local GameInstance = UE4.UGameplayStatics.GetGameInstance(self)
     self.MapName = GameInstance.MapName
     self.MaxPlayer = GameInstance.MaxPlayer
+    print(GameInstance.MaxPlayer)
 end
 
+--调到所有PlayerController的UpdateSelf（会rpc回客户端）
 function BP_GM_Lobby_C:UpdateAllPlayer_RPC()
+    --Server 
     local PlayerList = self.PlayerList:ToTable()
     for index, value in ipairs(PlayerList) do
         value:Event_UpateSelf(self.PlayerInfoList, self.MapName, self.MaxPlayer)
@@ -61,8 +67,11 @@ function BP_GM_Lobby_C:Event_AddPlayerInfo_RPC(PlayerInfo)
     local PlayerStart = nil 
     local PlayerClass = nil
     
+    --_M角色多个血条
     PlayerClass = UE4.UClass.Load("/Game/BP_New/BP_player_M.BP_player_M_C")
     -- PlayerClass = UE4.UClass.Load("/Game/Blueprint/BP_player.BP_player")
+
+    --确定出生点
     if PlayerInfo.Team == 0 then
         PlayerStart = self:FindPlayerStart(playerController, "Red")
     else
@@ -71,7 +80,7 @@ function BP_GM_Lobby_C:Event_AddPlayerInfo_RPC(PlayerInfo)
     local Color = nil
     local Player = nil
     local BaseColor = {}
-    BaseColor[0] = PlayerInfo.Prof
+    BaseColor[0] = PlayerInfo.Prof 
 
     Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
 

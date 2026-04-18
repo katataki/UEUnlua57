@@ -27,21 +27,22 @@ function UI_CreateRoom_C:OnClickCreate()
     local GameInstance = UE4.UGameplayStatics.GetGameInstance(self)
     GameInstance.MapName = self.txtRoomName:GetText()
     GameInstance.MaxPlayer = GameMgr.MAX_PLAYER_COUNT
+    print("AAA",GameInstance.MaxPlayer,GameMgr.MAX_PLAYER_COUNT)
     local bUseLan = false
     local SelectedOption = self.ComboBoxNet:GetSelectedOption()
     if SelectedOption == "Lan" then
         bUseLan = true
     end
     
-    -- print("Lan"..tostring(lan))
-    -- local PlayerController = UE4.UGameplayStatics.GetPlayerController(self, 0)
-    -- local SessionProxy = UE4.UCreateSessionCallbackProxy.CreateSession(self, PlayerController, GameInstance.MaxPlayer, bUseLan)
-    -- SessionProxy.OnSuccess:Add(self, UI_CreateRoom_C.OnSuccess)
-    -- SessionProxy.OnFailure:Add(self, UI_CreateRoom_C.OnFailure)
+    print("Lan"..tostring(lan))
+    local PlayerController = UE4.UGameplayStatics.GetPlayerController(self, 0)
+    local SessionProxy = UE4.UCreateSessionCallbackProxy.CreateSession(self, PlayerController, GameInstance.MaxPlayer, bUseLan)
+    SessionProxy.OnSuccess:Add(self, UI_CreateRoom_C.OnSuccess)
+    SessionProxy.OnFailure:Add(self, UI_CreateRoom_C.OnFailure)
 
-    -- print("创建会话")
-    -- --UCreateSessionCallbackProxy 创建会话代理需要调用 Activate() 才会执行：
-    -- SessionProxy:Activate()
+    print("创建会话")
+    --UCreateSessionCallbackProxy 创建会话代理需要调用 Activate() 才会执行：
+    SessionProxy:Activate()
 
     -- 创建会话
     self:CreateSession(GameInstance.MaxPlayer, bUseLan)
