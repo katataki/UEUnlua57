@@ -146,7 +146,7 @@ function BP_player_M_C:ReceiveTick(DeltaSeconds)
     local cameraLoc = UE4.UGameplayStatics.GetPlayerCameraManager(self, 0):GetCameraLocation()
     local hpLoc = self.HPBar:K2_GetComponentLocation()
     local rot = UE4.UKismetMathLibrary.FindLookAtRotation(hpLoc, cameraLoc)
-    self.HPBar:K2_SetWorldRotation(rot)
+    self.HPBar:K2_SetWorldRotation(rot,false,nil,false)
 end
 
 --function BP_player_M_C:ReceiveAnyDamage(Damage, DamageType, InstigatedBy, DamageCauser)
