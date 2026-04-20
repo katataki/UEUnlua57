@@ -18,7 +18,7 @@ function BP_PlayerController_M_C:ReceiveBeginPlay()
     self.RightVec = UE4.FVector()
     -- if self:HasAuthority() then
     --     self.PlayerInfo = UE4.UGameplayStatics.GetGameInstance(self).PlayerInfo
-    --     print('地图名称:'  .. PlayerInfo.Name)
+    --     print('地图名称:'  .. self.PlayerInfo.Name)
     -- end
 end
 
@@ -38,7 +38,7 @@ function BP_PlayerController_M_C:MoveRight(AxisValue)
         local Direction = Rotation:GetRightVector(self.RightVec)
         self.Pawn:AddMovementInput(Direction, AxisValue)
     end
-    
+
 end
 
 function BP_PlayerController_M_C:Turn(AxisValue)
@@ -142,6 +142,7 @@ end
 --- 同步攻击者和受击者
 ---
 function BP_PlayerController_M_C:Event_Hurt_RPC(KilledName, InstigatorName, Damage)
+    --Server
     local GameMode = UE4.UGameplayStatics.GetGameMode(self)
     if GameMode then
         GameMode:Hurt(KilledName, InstigatorName, Damage)
@@ -159,12 +160,17 @@ function BP_PlayerController_M_C:Hurt_RPC(Name, InstigatorName, NewLife)
     local pawns = results:ToTable()
     for index, value in ipairs(pawns) do
         local Pawn = value
+        print(Name,Pawn.PlayerInfo.Name)
         if Pawn.PlayerInfo.Name == Name then
             local HPBar = Pawn.HPBar:GetUserWidgetObject()
-            local percent = 1.0
-            percent = NewLife / Pawn.PlayerInfo.MaxLife
-            HPBar.hpBar:SetPercent(percent)
+            HPBar:Update(NewLife,Pawn.PlayerInfo.MaxLife)
 
+            -- local percent = 1.0
+            -- percent = NewLife / Pawn.PlayerInfo.MaxLife
+            -- HPBar.hpBar:SetPercent(percent)
+            -- local hpString = math.ceil(NewLife).."/"..math.ceil(Pawn.PlayerInfo.MaxLife)
+            -- HPBar.hpText:SetText(hpString)
+            
             if NewLife <= 0 then
                 Pawn:Died()
             end

@@ -67,6 +67,7 @@ function GameModeM_C:K2_PostLogin(NewPlayer)
     if self:HasAuthority() then
         ID = ID + 1
         NewPlayer.IDX = ID
+        print("新增玩家","ID为：",ID)
         self.PlayerList:Add(NewPlayer)
         if NewPlayer.ControlledPawn ~= nil then
             NewPlayer.ControlledPawn:DestoryActor()
@@ -143,17 +144,21 @@ end
 
 function GameModeM_C:Hurt(KilledName, InstigatorName, Damage)
 
+    --找到挨打的哪个玩家，扣他血量数据
     local TablePlayer = self.PlayerInfoList:ToTable()
     local index = self:GetIndex(TablePlayer, KilledName)
     if index == -1 then
+        print("找不到挨打的玩家,玩家名：",KilledName)
         return
     end
     local PlayerInfo = self.PlayerInfoList:GetRef(index)
     PlayerInfo.Life = math.max(PlayerInfo.Life - Damage, 0)
-
+    print("玩家：",KilledName,"血量变化",PlayerInfo.Life)
+    
     if PlayerInfo.Life <= 0 then
         self:NotifyPlayerDie(KilledName, InstigatorName)
     end
+    --遍历玩家控制器表，更新血量
     local PlayerList = self.PlayerList:ToTable()
     for index, value in ipairs(PlayerList) do
         value:Hurt(KilledName, InstigatorName, PlayerInfo.Life)

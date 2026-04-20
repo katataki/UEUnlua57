@@ -45,7 +45,7 @@ function MyGameMode_C:K2_PostLogin(NewPlayer)
         if not World then
             return
         end
-        local PlayerClass = UE4.UClass.Load("/Game/Blueprint/BP_player.BP_player")
+        local PlayerClass = UE4.UClass.Load("/Game/Blueprint/BP_player.BP_player_C")
         local Player = World:SpawnActor(PlayerClass, self:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self)
         NewPlayer:Possess(Player)
     end

@@ -46,7 +46,7 @@ function BP_player_M_C:ReceiveBeginPlay()
         end
     end
   
-    
+    --切换动画模式为动画蓝图，根据预设序号确定动画蓝图
     self.Mesh:SetAnimationMode(0)
     if self.prof == 1 then
         self:ChangeMesh('/Game/Role/Swat/Swat.Swat', '/Game/Blueprint/Swat/ABP_Swat.ABP_Swat_C')
@@ -62,15 +62,25 @@ function BP_player_M_C:ReceiveBeginPlay()
     
     local HPBar = self.HPBar:GetUserWidgetObject()
     self.HPBar:SetVisibility(false)
-    HPBar.hpBar:SetPercent(1)
+    --初始化血量显示
+    HPBar:Update(self.MaxLife,self.PlayerInfo.MaxLife)
+    --HPBar.hpBar:SetPercent(1)
+
+    local UI_PlayerInfo = self.UI_PlayerInfo:GetUserWidgetObject()
+    UI_PlayerInfo:SetPlayerInfo(self.PlayerInfo)
+
+    --默认是隐藏的，这里方便测试都显示血条先
+    self.HPBar:SetVisibility(true)
+    --不是玩家0，就不是本机，只显示别人的血条UI
     local Player0 = UE4.UGameplayStatics.GetPlayerCharacter(self, 0)
     if Player0 and Player0.PlayerInfo.Name ~= self.PlayerInfo.Name then
         self.bMySelf = false
-        self.HPBar:SetVisibility(true)
+        --self.HPBar:SetVisibility(true)
         return
     end
 end
 
+--换模型和动画蓝图
 function BP_player_M_C:ChangeMesh(strMesh, strAnim)
     local Mesh = UE4.UObject.Load(strMesh)
     --self.Mesh.SkeletalMesh = Mesh
@@ -98,11 +108,35 @@ function BP_player_M_C:ReceiveAnyDamage(Damage, DamageType, InstigatedBy, Damage
     end
 
     local Controller = self:GetController()
-    if Controller.PlayerInfo.Team == InstigatedBy.PlayerInfo.Team then
-       return
+    --玩家角色控制器类
+    local BP_PlayerController_M_C = UE.UClass.Load("/Game/BP_New/BP_PlayerController_M.BP_PlayerController_M_C")
+    if BP_PlayerController_M_C == nil then
+        return
+    end
+    --怪物角色控制器类
+    local BP_MonsterController_C = UE.UClass.Load("/Game/Blueprint/Monster/BP_MonsterController.BP_MonsterController_C")
+    if BP_MonsterController_C == nil then
+        return
     end
 
-    Controller:Event_Hurt(Controller.PlayerInfo.Name, InstigatedBy.PlayerInfo.Name, Damage)
+    --自己的控制器肯定是玩家控制器
+    local BP_PlayerController_M = Controller:Cast(BP_PlayerController_M_C)
+    if BP_PlayerController_M == nil then 
+        return 
+    end
+
+
+    if InstigatedBy:IsA(BP_MonsterController_C) then
+        print("玩家",BP_PlayerController_M.PlayerInfo.Name,"受到","Monster","攻击，受到伤害",Damage)
+        BP_PlayerController_M:Event_Hurt(BP_PlayerController_M.PlayerInfo.Name, "Monster", Damage)
+    end
+    if InstigatedBy:IsA(BP_PlayerController_M_C) then
+        --屏蔽友伤
+        if BP_PlayerController_M.PlayerInfo.Team == InstigatedBy.PlayerInfo.Team then
+            return
+        end
+        BP_PlayerController_M:Event_Hurt(BP_PlayerController_M.PlayerInfo.Name, InstigatedBy.PlayerInfo.Name, Damage)
+    end
 end
 
 function BP_player_M_C:Died()
@@ -124,6 +158,7 @@ function BP_player_M_C:Destory()
 end
 
 function BP_player_M_C:Fire_RPC(Dir)
+    --Server
     if self.Weapon == nil then
         return
     end
@@ -133,16 +168,18 @@ end
 --function BP_player_M_C:ReceiveEndPlay()
 --end
 
+
 function BP_player_M_C:ReceiveTick(DeltaSeconds)
-    if  self.bMySelf then
-        return
-    end
+    -- if  self.bMySelf then
+    --     return
+    -- end
 
     if self.IsDead then
         self.HPBar:SetVisibility(false)
         return
     end
 
+    --更新血条UI朝向摄像机
     local cameraLoc = UE4.UGameplayStatics.GetPlayerCameraManager(self, 0):GetCameraLocation()
     local hpLoc = self.HPBar:K2_GetComponentLocation()
     local rot = UE4.UKismetMathLibrary.FindLookAtRotation(hpLoc, cameraLoc)

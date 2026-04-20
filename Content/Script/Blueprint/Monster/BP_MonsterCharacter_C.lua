@@ -25,20 +25,33 @@ end
 
 --怪物是拿球撞人，撞到就扣血
 function BP_MonsterCharacter_C:OnComponentHit_Sphere(HitComponent, OtherActor, OtherComp, NormalImpulse, Hit)
-    print("Hit Player")
+    --怪物类基类受击
     local BP_CharacterBase_C = UE.UClass.Load("/Game/BP_CharacterBase.BP_CharacterBase_C")
 	local Character = OtherActor:Cast(BP_CharacterBase_C)
     --应用伤害到触发者
 	if Character then
+        print("Hit Monster")
 		local Controller = self.Instigator:GetController()
 		UE4.UGameplayStatics.ApplyDamage(Character, self.Damage, Controller, self.Instigator, self.DamageType)
 	end
+
+    --玩家类受击
+    local BP_CharacterB_C = UE.UClass.Load("/Game/BP_New/BP_CharacterB.BP_CharacterB_C")
+    local CharacterB = OtherActor:Cast(BP_CharacterB_C)
+    --应用伤害到触发者
+	if CharacterB then
+        print("Hit Player")
+		local Controller = self.Instigator:GetController()
+		UE4.UGameplayStatics.ApplyDamage(CharacterB, self.Damage, Controller, self.Instigator, self.DamageType)
+	end
+
 end
 
 function BP_MonsterCharacter_C:ReceiveAnyDamage(Damage, DamageType, InstigatedBy, DamageCauser)
     if self.IsDead then
         return
     end
+    --扣血到死，关闭碰撞
     self.Life = math.max(self.Life - Damage, 0)
     if self.Life <= 0 then
         self.IsDead = true
@@ -51,6 +64,7 @@ function BP_MonsterCharacter_C:ReceiveAnyDamage(Damage, DamageType, InstigatedBy
         InstigatedBy:Event_KillMonster()
         --self:Die(InstigatedBy.ID)
         
+        --定时销毁，等它播完死亡动画
         self.TimerDie = UE4.UKismetSystemLibrary.K2_SetTimerDelegate({self, BP_MonsterCharacter_C.Destory}, 5, true)
     end
 end

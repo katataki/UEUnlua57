@@ -96,7 +96,7 @@ function UI_Lobby_C:Event_UpdateReady(MaxPlayer, PlayerInfoList)
 
     if Status == "Server" then
         print(PlayerInfoList:Length(),MaxPlayer)
-        if PlayerInfoList:Length() == MaxPlayer then
+        if PlayerInfoList:Length() <= MaxPlayer then
             if self:CheckAllReady(PlayerInfoList) then
                 self.txtReadyText:SetText("开始游戏")
                 self.Status = 4
