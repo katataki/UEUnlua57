@@ -40,7 +40,6 @@ function BP_GM_Lobby_C:SetMapName()
     local GameInstance = UE4.UGameplayStatics.GetGameInstance(self)
     self.MapName = GameInstance.MapName
     self.MaxPlayer = GameInstance.MaxPlayer
-    print(GameInstance.MaxPlayer)
 end
 
 --调到所有PlayerController的UpdateSelf（会rpc回客户端）
@@ -69,7 +68,7 @@ function BP_GM_Lobby_C:Event_AddPlayerInfo_RPC(PlayerInfo)
     
     --_M角色多个血条
     PlayerClass = UE4.UClass.Load("/Game/BP_New/BP_player_M.BP_player_M_C")
-    -- PlayerClass = UE4.UClass.Load("/Game/Blueprint/BP_player.BP_player")
+    -- PlayerClass = UE4.UClass.Load("/Game/Blueprint/BP_player.BP_player_C")
 
     --确定出生点
     if PlayerInfo.Team == 0 then

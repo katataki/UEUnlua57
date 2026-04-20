@@ -45,11 +45,13 @@ function BP_Weapon_C:ReceiveTick(DeltaSeconds)
 end
 
 function BP_Weapon_C:Event_Fire(Dir)
+    print("Fire")
     self:SpawnProjectile(Dir)
 end
 
 --随机子弹颜色
 function BP_Weapon_C:SpawnProjectile(Dir)
+    
     if self.ProjectileClass then
         local Transform = self:GetFireInfo(Dir)
 		local R = UE4.UKismetMathLibrary.RandomFloat()
@@ -57,7 +59,8 @@ function BP_Weapon_C:SpawnProjectile(Dir)
 		local B = UE4.UKismetMathLibrary.RandomFloat()
 		local BaseColor = {}
 		BaseColor[0] = UE4.FLinearColor(R, G, B, 1.0)
-		local Projectile = self.World:SpawnActor(self.ProjectileClass, Transform, UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self.Instigator, "Blueprint.Weapon.BP_DefaultProjectile_C", BaseColor)
+        local Projectile = self.World:SpawnActor(self.ProjectileClass, Transform, UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self.Instigator, nil, BaseColor)
+		--local Projectile = self.World:SpawnActor(self.ProjectileClass, Transform, UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self.Instigator, "Blueprint.Weapon.BP_DefaultProjectile_C", BaseColor)
 	end
 end
 
@@ -68,6 +71,7 @@ function BP_Weapon_C:GetFireInfo(Dir)
         return Transform
     end
 
+    --枪口作起点
     local TraceStart = Camera:K2_GetComponentLocation()
     local Translation = self.SkeletalMesh:GetSocketLocation(self.MuzzleSocketName)
     TraceStart = Translation

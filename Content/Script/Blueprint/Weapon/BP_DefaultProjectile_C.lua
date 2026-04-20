@@ -38,6 +38,7 @@ function BP_DefaultProjectile_C:OnComponentHit_Sphere(HitComponent, OtherActor, 
 end
 
 function BP_DefaultProjectile_C:ReceiveBeginPlay()
+	--self.Sphere.OnComponentHit:Add(self, BP_DefaultProjectile_C.OnComponentHit_Sphere)
 	if self.BaseColor ~= nil then
 		self.Color = self.BaseColor
 	end

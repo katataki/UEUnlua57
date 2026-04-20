@@ -26,7 +26,7 @@ function HPBar_C:Update(HP, MaxHP)
     if MaxHP <= 0 then 
         percent = 1
     else 
-        percent = HP / Max
+        percent = HP / MaxHP
     end 
     self.hpBar:SetPercent(percent)
     local text = string.format("%.0f/%.0f", HP, MaxHP)

@@ -13,7 +13,7 @@ GameMgr = {
     MaxWave = 100,
     MaxNum = 1
 }
-GameMgr.MAX_PLAYER_COUNT = 2
+
 
 function GameMgr:ShowGameInfo()
     print('')

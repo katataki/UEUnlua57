@@ -86,12 +86,15 @@ function BP_PlayerController_M_C:Event_KillPlayer(KilledName, InstigatorName)
 end
 
 function BP_PlayerController_M_C:GetDirInfo()
+    --获取视口尺寸
     local ViewportSize = UE4.UWidgetLayoutLibrary.GetViewportSize(self)
+
     ViewportSize.X = 0.5 * ViewportSize.X
     ViewportSize.Y = 0.5 * ViewportSize.Y
 
     local WorldLoc = UE4.FVector()
     local WorldDir = UE4.FVector()
+    --投射屏幕坐标到世界
     self:DeprojectScreenPositionToWorld(ViewportSize.X, ViewportSize.Y, WorldLoc, WorldDir)
     return WorldDir
 end
@@ -170,7 +173,7 @@ function BP_PlayerController_M_C:Hurt_RPC(Name, InstigatorName, NewLife)
             -- HPBar.hpBar:SetPercent(percent)
             -- local hpString = math.ceil(NewLife).."/"..math.ceil(Pawn.PlayerInfo.MaxLife)
             -- HPBar.hpText:SetText(hpString)
-            
+
             if NewLife <= 0 then
                 Pawn:Died()
             end
