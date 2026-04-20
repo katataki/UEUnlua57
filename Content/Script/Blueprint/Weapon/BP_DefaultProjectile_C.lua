@@ -26,6 +26,7 @@ end
 
 function BP_DefaultProjectile_C:OnComponentHit_Sphere(HitComponent, OtherActor, OtherComp, NormalImpulse, Hit)
 	local Character = OtherActor
+	--子弹激发者，也就是开枪的人，屏蔽掉
 	if Character == self.Instigator then
 		return
 	end

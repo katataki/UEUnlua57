@@ -34,6 +34,10 @@ function BP_Weapon_C:ReceiveTick(DeltaSeconds)
         if controller == nil or controller0 == nil then
             return
         end
+        if controller.PlayerInfo == nil or controller0.PlayerInfo == nil then
+            return
+        end
+
         if controller.PlayerInfo.Status == controller0.PlayerInfo.Status then
             self:GetFireInfo()
         end
@@ -44,6 +48,7 @@ function BP_Weapon_C:Event_Fire(Dir)
     self:SpawnProjectile(Dir)
 end
 
+--随机子弹颜色
 function BP_Weapon_C:SpawnProjectile(Dir)
     if self.ProjectileClass then
         local Transform = self:GetFireInfo(Dir)

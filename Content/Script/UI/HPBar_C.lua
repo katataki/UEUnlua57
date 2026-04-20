@@ -23,7 +23,11 @@ local HPBar_C = UnLua.Class()
 
 function HPBar_C:Update(HP, MaxHP)
     local percent = 1.0
-    percent = HP / MaxHP
+    if MaxHP <= 0 then 
+        percent = 1
+    else 
+        percent = HP / Max
+    end 
     self.hpBar:SetPercent(percent)
     local text = string.format("%.0f/%.0f", HP, MaxHP)
     --local hpString = math.ceil(HP).."/"..math.ceil(MaxHP)
