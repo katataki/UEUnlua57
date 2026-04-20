@@ -33,7 +33,9 @@ function ABP_Monster_C:BlueprintUpdateAnimation(DeltaTimeX)
         return
     end
 
-    local Character = Pawn:Cast(UE4.ABP_CharacterBase_C)
+    --从角色类同步死亡状态
+    local BP_CharacterBase_C = UE.UClass.Load("/Game/BP_CharacterBase.BP_CharacterBase_C")
+    local Character = Pawn:Cast(BP_CharacterBase_C)
 	if Character then
 		if Character.IsDead and not self.IsDead then
 			self.IsDead = true

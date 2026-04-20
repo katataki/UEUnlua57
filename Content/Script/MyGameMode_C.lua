@@ -18,7 +18,7 @@ local MyGameMode_C = Class()
 
 
 function MyGameMode_C:ReceiveBeginPlay()
-    self.MonsterClass = UE4.UClass.Load("/Game/Blueprint/Monster/BP_MonsterCharacter.BP_MonsterCharacter")
+    self.MonsterClass = UE4.UClass.Load("/Game/Blueprint/Monster/BP_MonsterCharacter.BP_MonsterCharacter_C")
     self.MaxNum = 3
     self.CurrentNum = 0
     self.CurrentGenNum = 0

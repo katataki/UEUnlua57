@@ -7,15 +7,16 @@
 --
 -- @DATE ${date} ${time}
 --
-
+require "GameMgr"
 require "UnLua"
 
 local GameModeM_C = Class()
 
 PlayerMaxLife = 500
 
+--BeginPlay每2s定时生成怪物
 function GameModeM_C:ReceiveBeginPlay()
-    self.MonsterClass = UE4.UClass.Load("/Game/Blueprint/Monster/BP_MonsterCharacter.BP_MonsterCharacter")
+    self.MonsterClass = UE4.UClass.Load("/Game/Blueprint/Monster/BP_MonsterCharacter.BP_MonsterCharacter_C")
     self.OriginLocation = UE4.FVector(450,420,108)
     self.MonsterLocation = UE4.FVector()
 
@@ -60,6 +61,7 @@ function GameModeM_C:SpawnPlayerAndControl(PlayerInfo, playerController)
     GameMgr:ShowGameInfo()
 end
 
+--ID从100开始计数，没进来一个人分配ID+1
 ID = 100
 function GameModeM_C:K2_PostLogin(NewPlayer)
     if self:HasAuthority() then
@@ -107,6 +109,7 @@ function GameModeM_C:OnTimerGenMonster()
     if PlayerCharacter == nil then
         return
     end
+    --每超上限一直生成怪
     if GameMgr.CurrentGenNum ~= GameMgr.MaxNum then
         UE4.UNavigationSystemV1.K2_GetRandomReachablePointInRadius(self, self.OriginLocation, self.MonsterLocation, 2000)
         local PlayerLocation = PlayerCharacter:K2_GetActorLocation()

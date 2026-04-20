@@ -19,7 +19,8 @@ function BP_ProjectileBase_C:UserConstructionScript()
 end
 
 function BP_ProjectileBase_C:OnComponentHit_Sphere(HitComponent, OtherActor, OtherComp, NormalImpulse, Hit)
-	local Character = OtherActor:Cast(UE4.ABP_CharacterBase_C)
+	local BP_CharacterBase_C = UE.UClass.Load("/Game/BP_CharacterBase.BP_CharacterBase_C")
+	local Character = OtherActor:Cast(BP_CharacterBase_C)
 	if Character then
 		local Controller = self.Instigator:GetController()
 		UE4.UGameplayStatics.ApplyDamage(Character, self.Damage, Controller, self.Instigator, self.DamageType)

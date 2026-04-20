@@ -16,7 +16,7 @@ local BP_DefaultWeapon_C = Class("Blueprint.Weapon.BP_WeaponBase_C")
 function BP_DefaultWeapon_C:UserConstructionScript()
     self.Super.UserConstructionScript(self)
     self.MuzzleSocketName = "Muzzle"
-    self.ProjectileClass = UE4.UClass.Load("/Game/Blueprint/Weapon/BP_DefaultProjectile.BP_DefaultProjectile")
+    self.ProjectileClass = UE4.UClass.Load("/Game/Blueprint/Weapon/BP_DefaultProjectile.BP_DefaultProjectile_C")
     self.World = self:GetWorld()
 end
 

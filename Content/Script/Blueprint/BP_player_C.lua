@@ -57,7 +57,7 @@ function BP_player_C:SpawnWeapon()
 	if not World then
 		return
 	end
-	local WeaponClass = UE4.UClass.Load("/Game/Blueprint/Weapon/BP_DefaultWeapon.BP_DefaultWeapon")
+	local WeaponClass = UE4.UClass.Load("/Game/Blueprint/Weapon/BP_DefaultWeapon.BP_DefaultWeapon_C")
 	local NewWeapon = World:SpawnActor(WeaponClass, self:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, "Blueprint.Weapon.BP_DefaultWeapon_C")
 	return NewWeapon
 end

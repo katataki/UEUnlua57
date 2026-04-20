@@ -23,9 +23,12 @@ function BP_MonsterCharacter_C:ReceiveBeginPlay()
     self.Sphere.OnComponentHit:Add(self, BP_MonsterCharacter_C.OnComponentHit_Sphere)
 end
 
+--怪物是拿球撞人，撞到就扣血
 function BP_MonsterCharacter_C:OnComponentHit_Sphere(HitComponent, OtherActor, OtherComp, NormalImpulse, Hit)
     print("Hit Player")
-	local Character = OtherActor:Cast(UE4.ABP_CharacterBase_C)
+    local BP_CharacterBase_C = UE.UClass.Load("/Game/BP_CharacterBase.BP_CharacterBase_C")
+	local Character = OtherActor:Cast(BP_CharacterBase_C)
+    --应用伤害到触发者
 	if Character then
 		local Controller = self.Instigator:GetController()
 		UE4.UGameplayStatics.ApplyDamage(Character, self.Damage, Controller, self.Instigator, self.DamageType)
