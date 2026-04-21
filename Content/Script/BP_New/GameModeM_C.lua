@@ -69,6 +69,7 @@ function GameModeM_C:K2_PostLogin(NewPlayer)
         NewPlayer.IDX = ID
         print("新增玩家","ID为：",ID)
         self.PlayerList:Add(NewPlayer)
+        
         if NewPlayer.ControlledPawn ~= nil then
             NewPlayer.ControlledPawn:DestoryActor()
         end
