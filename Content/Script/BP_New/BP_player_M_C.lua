@@ -63,7 +63,7 @@ function BP_player_M_C:ReceiveBeginPlay()
     local HPBar = self.HPBar:GetUserWidgetObject()
     self.HPBar:SetVisibility(false)
     --初始化血量显示
-    HPBar:Update(self.MaxLife,self.PlayerInfo.MaxLife)
+    HPBar:Update(self.PlayerInfo.Life,self.PlayerInfo.MaxLife)
     --HPBar.hpBar:SetPercent(1)
 
     local UI_PlayerInfo = self.UI_PlayerInfo:GetUserWidgetObject()
@@ -184,6 +184,15 @@ function BP_player_M_C:ReceiveTick(DeltaSeconds)
     local hpLoc = self.HPBar:K2_GetComponentLocation()
     local rot = UE4.UKismetMathLibrary.FindLookAtRotation(hpLoc, cameraLoc)
     self.HPBar:K2_SetWorldRotation(rot,false,nil,false)
+
+    local HPBar = self.HPBar:GetUserWidgetObject()
+    self.HPBar:SetVisibility(false)
+    --初始化血量显示
+    HPBar:Update(self.PlayerInfo.Life,self.PlayerInfo.MaxLife)
+    --HPBar.hpBar:SetPercent(1)
+
+    local UI_PlayerInfo = self.UI_PlayerInfo:GetUserWidgetObject()
+    UI_PlayerInfo:SetPlayerInfo(self.PlayerInfo)
 end
 
 --function BP_player_M_C:ReceiveAnyDamage(Damage, DamageType, InstigatedBy, DamageCauser)

@@ -13,7 +13,7 @@ local BP_MonsterCharacter_C = Class()
 
 function BP_MonsterCharacter_C:Initialize(Initializer)
     self.Life = 100
-    self.Damage = 1
+    self.Damage = 100
 end
 
 --function BP_MonsterCharacter_C:UserConstructionScript()
