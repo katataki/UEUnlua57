@@ -13,7 +13,7 @@ local BP_MonsterCharacter_C = Class()
 
 function BP_MonsterCharacter_C:Initialize(Initializer)
     self.Life = 100
-    self.Damage = 100
+    self.Damage = 10
 end
 
 --function BP_MonsterCharacter_C:UserConstructionScript()
@@ -61,7 +61,15 @@ function BP_MonsterCharacter_C:ReceiveAnyDamage(Damage, DamageType, InstigatedBy
             Controller:UnPossess()
         end
         self.Sphere:SetCollisionEnabled(UE4.ECollisionEnabled.NoCollision)
-        InstigatedBy:Event_KillMonster()
+        --可能会出现杀死怪物时玩家已经死亡，导致调用失败
+        if InstigatedBy then
+            InstigatedBy:Event_KillMonster()
+        end
+
+        -- local GameMode = UE4.UGameplayStatics.GetGameMode(self)
+        -- if GameMode then
+        --     GameMode:NotifyEnemyDie(self.PlayerInfo.Name)
+        -- end
         --self:Die(InstigatedBy.ID)
         
         --定时销毁，等它播完死亡动画

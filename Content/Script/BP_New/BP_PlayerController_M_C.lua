@@ -157,6 +157,7 @@ end
 --- 同步谁受到攻击到客户端
 ---
 function BP_PlayerController_M_C:Hurt_RPC(Name, InstigatorName, NewLife)
+    --遍历角色类，更新血条
     local class = UE4.UClass.Load('/Game/BP_New/BP_player_M.BP_player_M_C')
     local results = UE4.TArray(UE4.AActor)
     UE4.UGameplayStatics.GetAllActorsOfClass(self, class, results)
@@ -173,7 +174,7 @@ function BP_PlayerController_M_C:Hurt_RPC(Name, InstigatorName, NewLife)
             -- HPBar.hpBar:SetPercent(percent)
             -- local hpString = math.ceil(NewLife).."/"..math.ceil(Pawn.PlayerInfo.MaxLife)
             -- HPBar.hpText:SetText(hpString)
-
+            --死亡判断
             if NewLife <= 0 then
                 Pawn:Died()
             end

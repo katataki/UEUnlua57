@@ -20,7 +20,7 @@ function BP_DefaultProjectile_C:Initialize(Initializer)
 end
 
 function BP_DefaultProjectile_C:UserConstructionScript()
-	self.Damage = 100
+	self.Damage = 30
     self.Sphere.OnComponentHit:Add(self, BP_DefaultProjectile_C.OnComponentHit_Sphere)
 end
 

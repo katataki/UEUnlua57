@@ -44,8 +44,8 @@ function UI_CreateRoom_C:OnClickCreate()
     --UCreateSessionCallbackProxy 创建会话代理需要调用 Activate() 才会执行：
     SessionProxy:Activate()
 
-    -- 创建会话
-    self:CreateSession(GameInstance.MaxPlayer, bUseLan)
+    -- 创建会话,调蓝图版本函数
+    --self:CreateSession(GameInstance.MaxPlayer, bUseLan)
 end
 
 function UI_CreateRoom_C:OnSuccess() 
