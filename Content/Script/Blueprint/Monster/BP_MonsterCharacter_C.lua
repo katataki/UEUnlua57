@@ -32,7 +32,7 @@ function BP_MonsterCharacter_C:OnComponentHit_Sphere(HitComponent, OtherActor, O
 	if Character then
         print("Hit Monster")
 		local Controller = self.Instigator:GetController()
-		UE4.UGameplayStatics.ApplyDamage(Character, self.Damage, Controller, self.Instigator, self.DamageType)
+		UE4.UGameplayStatics.ApplyDamage(Character, self.Damage, Controller, self.Instigator, self.DamageType)   
 	end
 
     --玩家类受击
@@ -99,10 +99,13 @@ function BP_MonsterCharacter_C:Destory()
     self:K2_DestroyActor()
 end
 
+function BP_MonsterCharacter_C:OnHurtEnemy()
+    self.Sphere:K2_SetWorldScale3D(5)
+end
 --function BP_MonsterCharacter_C:ReceiveEndPlay()
 --end
 
--- function BP_MonsterCharacter_C:ReceiveTick(DeltaSeconds)
+-- function BP_MonsterCharacter_C:ReceiveTick(DeltaSeconds) 
 -- end
 
 --function BP_MonsterCharacter_C:ReceiveAnyDamage(Damage, DamageType, InstigatedBy, DamageCauser)

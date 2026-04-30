@@ -64,7 +64,7 @@ function BP_PlayerController_M_C:Fire()
     self.Pawn:Fire(Dir)
 end
 
-function BP_PlayerController_M_C:Event_UpdatePlayerInfo1()
+function BP_PlayerController_M_C:Event_UpdatePlayerInfo()
     local GameMode = UE4.UGameplayStatics.GetGameMode(self)
     if GameMode then
         GameMode:Event_UpdatePlayerInfo(self.PlayerInfo)
@@ -105,6 +105,10 @@ end
 ---
 function BP_PlayerController_M_C:Event_UpdateSelf_RPC(PlayerInfos)
     self.UIGameScore:UpdateInfo(PlayerInfos)
+    -- local pawn = self:GetControlledPawn()
+    -- if pawn then
+    --     pawn:UpdateAllPlayer(PlayerInfos)
+    -- end
 end
 
 ---

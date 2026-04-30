@@ -23,7 +23,7 @@ function UI_CreateRoom_C:Construct()
     self.btnCreate.OnPressed:Add(self, UI_CreateRoom_C.OnClickCreate)
 end
 
-function UI_CreateRoom_C:OnClickCreate()
+function UI_CreateRoom_C:OnClickCreate()   
     local GameInstance = UE4.UGameplayStatics.GetGameInstance(self)
     GameInstance.MapName = self.txtRoomName:GetText()
     GameInstance.MaxPlayer = GameMgr.MAX_PLAYER_COUNT
@@ -34,6 +34,7 @@ function UI_CreateRoom_C:OnClickCreate()
         bUseLan = true
     end
     
+    --Client本地创建会话，向 OnlineSubsystem（Steam/局域网）注册会话
     print("Lan"..tostring(lan))
     local PlayerController = UE4.UGameplayStatics.GetPlayerController(self, 0)
     local SessionProxy = UE4.UCreateSessionCallbackProxy.CreateSession(self, PlayerController, GameInstance.MaxPlayer, bUseLan)
@@ -48,6 +49,7 @@ function UI_CreateRoom_C:OnClickCreate()
     --self:CreateSession(GameInstance.MaxPlayer, bUseLan)
 end
 
+--Client
 function UI_CreateRoom_C:OnSuccess() 
     print('创建成功')
     UE4.UGameplayStatics.OpenLevel(self, '/Game/Maps/MapLobby', true, 'listen')
@@ -70,6 +72,7 @@ function UI_CreateRoom_C:OnSuccess()
     -- end
 end
 
+--Client
 function UI_CreateRoom_C:OnFailure()
     print('创建失败')
 end

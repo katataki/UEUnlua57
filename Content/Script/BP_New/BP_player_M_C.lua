@@ -59,25 +59,45 @@ function BP_player_M_C:ReceiveBeginPlay()
 	-- if MID and self.Color then
 	-- 	MID:SetVectorParameterValue("BodyColor", self.Color)
     -- end
-    
+
+    --print('服务器',self:HasAuthority())
+    if(self:HasAuthority()) then
+        local HPBar = self.HPBar:GetUserWidgetObject()
+        self.HPBar:SetVisibility(false)
+        --初始化血量显示
+        HPBar:Update(self.PlayerInfo.Life,self.PlayerInfo.MaxLife)
+        --HPBar.hpBar:SetPercent(1)
+
+        local UI_PlayerInfo = self.UI_PlayerInfo:GetUserWidgetObject()
+        UI_PlayerInfo:SetPlayerInfo(self.PlayerInfo)
+
+        --默认是隐藏的，这里方便测试都显示血条先
+        self.HPBar:SetVisibility(true)
+        --不是玩家0，就不是本机，只显示别人的血条UI
+        local Player0 = UE4.UGameplayStatics.GetPlayerCharacter(self, 0)
+        if Player0 and Player0.PlayerInfo.Name ~= self.PlayerInfo.Name then
+            self.bMySelf = false
+            --self.HPBar:SetVisibility(true)
+            return
+        end
+    end
+end
+
+--根据PlayerInfo更新UI
+function BP_player_M_C:UpdatePlayerInfo_RPC()
+    --Client
+    if self:HasAuthority() then
+         print('跳过服务器',self:HasAuthority())
+        return
+    end
+
+    print(self.PlayerInfo.Life,self.PlayerInfo.MaxLife)
     local HPBar = self.HPBar:GetUserWidgetObject()
-    self.HPBar:SetVisibility(false)
     --初始化血量显示
     HPBar:Update(self.PlayerInfo.Life,self.PlayerInfo.MaxLife)
-    --HPBar.hpBar:SetPercent(1)
 
     local UI_PlayerInfo = self.UI_PlayerInfo:GetUserWidgetObject()
     UI_PlayerInfo:SetPlayerInfo(self.PlayerInfo)
-
-    --默认是隐藏的，这里方便测试都显示血条先
-    self.HPBar:SetVisibility(true)
-    --不是玩家0，就不是本机，只显示别人的血条UI
-    local Player0 = UE4.UGameplayStatics.GetPlayerCharacter(self, 0)
-    if Player0 and Player0.PlayerInfo.Name ~= self.PlayerInfo.Name then
-        self.bMySelf = false
-        --self.HPBar:SetVisibility(true)
-        return
-    end
 end
 
 --换模型和动画蓝图
@@ -188,10 +208,9 @@ function BP_player_M_C:ReceiveTick(DeltaSeconds)
     -- local HPBar = self.HPBar:GetUserWidgetObject()
     -- --初始化血量显示
     -- HPBar:Update(self.PlayerInfo.Life,self.PlayerInfo.MaxLife)
-    -- --HPBar.hpBar:SetPercent(1)
 
-    -- local UI_PlayerInfo = self.UI_PlayerInfo:GetUserWidgetObject()
-    -- UI_PlayerInfo:SetPlayerInfo(self.PlayerInfo)
+    local UI_PlayerInfo = self.UI_PlayerInfo:GetUserWidgetObject()
+    UI_PlayerInfo:SetPlayerInfo(self.PlayerInfo)
 end
 
 --function BP_player_M_C:ReceiveAnyDamage(Damage, DamageType, InstigatedBy, DamageCauser)

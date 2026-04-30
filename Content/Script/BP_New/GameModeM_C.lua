@@ -16,11 +16,13 @@ PlayerMaxLife = 500
 
 --BeginPlay每2s定时生成怪物
 function GameModeM_C:ReceiveBeginPlay()
+
+
     self.MonsterClass = UE4.UClass.Load("/Game/Blueprint/Monster/BP_MonsterCharacter.BP_MonsterCharacter_C")
     self.OriginLocation = UE4.FVector(450,420,108)
     self.MonsterLocation = UE4.FVector()
 
-    UE4.UKismetSystemLibrary.K2_SetTimerDelegate({self, GameModeM_C.OnTimerGenMonster}, 2, true)
+    --UE4.UKismetSystemLibrary.K2_SetTimerDelegate({self, GameModeM_C.OnTimerGenMonster}, 2, true)
 end
 
 function GameModeM_C:Event_AddPlayerInfo(PlayerInfo)
@@ -56,7 +58,9 @@ function GameModeM_C:SpawnPlayerAndControl(PlayerInfo, playerController)
     BaseColor[0] = PlayerInfo.Prof
     Player = World:SpawnActor(PlayerClass, PlayerStart:GetTransform(), UE4.ESpawnActorCollisionHandlingMethod.AlwaysSpawn, self, self, nil, BaseColor)
 
+    print("重生血量",PlayerInfo.Life,"/",PlayerInfo.MaxLife)
     Player.PlayerInfo = PlayerInfo
+    Player:UpdatePlayerInfo()
     playerController:Possess(Player)
     GameMgr:ShowGameInfo()
 end
@@ -64,10 +68,11 @@ end
 --ID从100开始计数，没进来一个人分配ID+1
 ID = 100
 function GameModeM_C:K2_PostLogin(NewPlayer)
+    --仅服务器调用
     if self:HasAuthority() then
         ID = ID + 1
         NewPlayer.IDX = ID
-        print("新增玩家","ID为：",ID)
+        print("服务器新增玩家","ID为：",ID)
         self.PlayerList:Add(NewPlayer)
         
         if NewPlayer.ControlledPawn ~= nil then
@@ -92,7 +97,7 @@ function GameModeM_C:Reborn(PlayerInfo)
     local TablePlayer = self.PlayerInfoList:ToTable()
     local index = self:GetIndex(TablePlayer, PlayerInfo.Name)
     if index == -1 then
-        return
+        return 
     end
     --初始化生命
     local tempPlayerInfo = self.PlayerInfoList:GetRef(index)
@@ -144,7 +149,7 @@ function GameModeM_C:NotifyEnemyDie(Name)
 end
 
 function GameModeM_C:Hurt(KilledName, InstigatorName, Damage)
-
+    --Server
     --找到挨打的哪个玩家，扣他血量数据
     local TablePlayer = self.PlayerInfoList:ToTable()
     local index = self:GetIndex(TablePlayer, KilledName)
@@ -156,6 +161,7 @@ function GameModeM_C:Hurt(KilledName, InstigatorName, Damage)
     PlayerInfo.Life = math.max(PlayerInfo.Life - Damage, 0)
     print("玩家：",KilledName,"血量变化",PlayerInfo.Life)
     
+
     if PlayerInfo.Life <= 0 then
         self:NotifyPlayerDie(KilledName, InstigatorName)
     end
@@ -164,6 +170,8 @@ function GameModeM_C:Hurt(KilledName, InstigatorName, Damage)
     for index, value in ipairs(PlayerList) do
         value:Hurt(KilledName, InstigatorName, PlayerInfo.Life)
     end
+    ---（会rpc回客户端）调到所有PlayerController的UpdateSelf{self.UILobby:Event_UpdateInfo(PlayerInfos, MaxPlayer, MapName)}
+    self:UpdateAllPlayer()
 end
 
 function GameModeM_C:NotifyPlayerDie(KilledName, InstigatorName)

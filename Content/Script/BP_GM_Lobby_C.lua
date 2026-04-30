@@ -140,6 +140,21 @@ function BP_GM_Lobby_C:AddChatInfo(Name, Message)
  end
 
 function BP_GM_Lobby_C:Event_Start()
+    --local BPClass = UE.UMyGameInstanceSubsystem.StaticClass()
+    -- 加载蓝图类（注意加 _C 后缀）
+    local BPClass = UE.UClass.Load("/Game/BP_MyGameInstanceSubsystem.BP_MyGameInstanceSubsystem_C")
+    local Subsystem = UE.USubsystemBlueprintLibrary.GetGameInstanceSubsystem(self, BPClass)
+
+    if Subsystem then
+        print("子系统",Subsystem:GetName(),"初始玩家数",Subsystem.InitialPlayerNum)
+        local InitialPlayerNum = self.PlayerList:Length()
+        Subsystem:RecordInitialPlayerNum(InitialPlayerNum)
+        print("子系统设置初始玩家数",Subsystem.InitialPlayerNum)
+    else
+        print("没有子系统")
+    end
+    
+
     local MName = "MapGame01"
     local Cmd = "ServerTravel " .. MName
     local Controller = UE4.UGameplayStatics.GetPlayerController(self, 0)
