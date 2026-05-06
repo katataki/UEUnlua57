@@ -1,8 +1,32 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+    "Lua.runtime.version": "Lua 5.3",
+    "Lua.runtime.path": [
+        "Script/?.lua",
+        "Script/?/init.lua",
+        "?.lua"
+    ],
+    "Lua.workspace.library": [
+        "${workspaceFolder}/.vscode/unlua-api",
+        "${workspaceFolder}/Script",
+        "${workspaceFolder}/Plugins/UnLua/Content/Script"
+    ],
+    "Lua.diagnostics.globals": [
+        "UE",
+        "UE4",
+        "UE5",
+        "self",
+        "Class",
+        "Script"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-global",
+        "lowercase-global"
+    ],
+    "Lua.completion.enable": true,
+    "Lua.hint.enable": true,
+    "folders": [
+        {
+            "path": "."
+        }
+    ]
 }

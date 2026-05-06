@@ -53,7 +53,6 @@ end
 function UI_CreateRoom_C:OnSuccess() 
     print('创建成功')
     UE4.UGameplayStatics.OpenLevel(self, '/Game/Maps/MapLobby', true, 'listen')
-
     -- 使用控制台命令执行 ServerTravel
     -- local PC = self:GetOwningPlayer()
     -- if PC then

@@ -8,8 +8,19 @@
 -- @DATE ${date} ${time}
 --
 
+
 require "UnLua"
 require "GameMgr"
+
+-- 在需要调试的文件顶部或初始化时
+--替换 emmy_core 为 LuaPanda
+-- local status, LuaPanda = pcall(require, "LuaPanda")
+-- if status then
+--     LuaPanda.start("127.0.0.1", 8818)
+-- else
+--     print("LuaPanda not found, running without debugger")
+-- end
+require("LuaPanda").start("127.0.0.1",8818)
 
 local UI_Start_C = Class()
 
