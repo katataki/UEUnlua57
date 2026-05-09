@@ -160,6 +160,7 @@ function BP_PlayerController_C:Event_UpdateAllPlayer_RPC()
     end
 end
 
+--OwningClient
 function BP_PlayerController_C:Event_ShowLobbyUI_RPC()
     print('LV::BP_PlayerController_C:Event_ShowLobbyUI_RPC')
     self.bShowMouseCursor = true

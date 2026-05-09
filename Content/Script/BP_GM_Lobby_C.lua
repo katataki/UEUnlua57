@@ -17,7 +17,7 @@ function BP_GM_Lobby_C:ReceiveBeginPlay()
     end
 end
 
-function BP_GM_Lobby_C:Event_UpdatePlayerInfo_RPC(PlayerInfo)
+function BP_GM_Lobby_C:Event_UpdatePlayerInfo(PlayerInfo)
     --Server
     self:UpdatePlayerInfoLocal(PlayerInfo)
     self:UpdateAllPlayer()
@@ -42,8 +42,8 @@ function BP_GM_Lobby_C:SetMapName()
     self.MaxPlayer = GameInstance.MaxPlayer
 end
 
---调到所有PlayerController的UpdateSelf（会rpc回客户端）
-function BP_GM_Lobby_C:UpdateAllPlayer_RPC()
+--调到所有PlayerController的UpdateSelf（UpdateSelf里面还会rpc回客户端）
+function BP_GM_Lobby_C:UpdateAllPlayer()
     --Server 
     local PlayerList = self.PlayerList:ToTable()
     for index, value in ipairs(PlayerList) do
@@ -52,8 +52,8 @@ function BP_GM_Lobby_C:UpdateAllPlayer_RPC()
 end
 ---
 ---不能定义pass by ref的参数。无法复制。
----
-function BP_GM_Lobby_C:Event_AddPlayerInfo_RPC(PlayerInfo)
+---Server
+function BP_GM_Lobby_C:Event_AddPlayerInfo(PlayerInfo)
     print('LV:: GameMode Add Player Info. Prof=' .. tostring(PlayerInfo.Prof) .. ", Name=" .. PlayerInfo.Name) 
     local index = self.PlayerInfoList:Add(PlayerInfo)
     local playerController = self.PlayerList:GetRef(index)
@@ -103,6 +103,7 @@ function BP_GM_Lobby_C:Event_AddPlayerInfo_RPC(PlayerInfo)
     GameMgr:ShowGameInfo() 
 end
 
+--PostLogin会创建新控制器，再调用蓝图函数K2_PostLogin(NewPlayer)
 function BP_GM_Lobby_C:K2_PostLogin(NewPlayer)
     if self:HasAuthority() then
         self:SetMapName()
