@@ -32,11 +32,14 @@ function BP_MonsterCharacter_C:ReceiveBeginPlay()
     end
     
     --记录初始玩家数
-    -- local PC = UE.UGameplayStatics.GetPlayerController(self, 0)
-    -- print('记录初始玩家数',)
-    -- local GameMode = UE.UGameplayStatics.GetGameMode(self)
-    -- local PlayerCount = GameMode:GetNumPlayers()
-    print('记录初始玩家数',PlayerCount)
+    local PC = UE.UGameplayStatics.GetPlayerController(self, 0)
+    print('记录初始玩家数')
+    local GameMode = UE.UGameplayStatics.GetGameMode(self)
+    if GameMode then
+        local PlayerCount = GameMode:GetNumPlayers()
+        print('记录初始玩家数',PlayerCount)
+    end
+    
 
     self.MonsterClass = UE4.UClass.Load("/Game/Blueprint/Monster/BP_MonsterCharacter.BP_MonsterCharacter_C")
     self.OriginLocation = UE4.FVector(450,420,108)

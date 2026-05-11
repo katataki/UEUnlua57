@@ -141,6 +141,12 @@ function BP_GM_Lobby_C:AddChatInfo(Name, Message)
  end
 
 function BP_GM_Lobby_C:Event_Start()
+
+    local GameInstance UE4.UGameplayStatics.GetGameInstance(self)
+    if GameInstance then
+        GameInstance.InitialPlayerCount = self.PlayerList:Length()
+    end
+
     --local BPClass = UE.UMyGameInstanceSubsystem.StaticClass()
     -- 加载蓝图类（注意加 _C 后缀）
     local BPClass = UE.UClass.Load("/Game/BP_MyGameInstanceSubsystem.BP_MyGameInstanceSubsystem_C")
@@ -154,6 +160,7 @@ function BP_GM_Lobby_C:Event_Start()
     else
         print("没有子系统")
     end
+
     
 
     local MName = "MapGame01"
