@@ -10,7 +10,7 @@ function M.DeclareEvent(eventName)
     return eventName
 end
 
--- 绑定事件 
+-- 绑定事件 ,绑定时可以带参数，调用时带的参数会补在这几个之后，通常会填个self
 function M.AddListener(eventName, callback, context)
     if not M.events[eventName] then
         M.events[eventName] = {}
@@ -23,7 +23,7 @@ function M.AddListener(eventName, callback, context)
     })
 end
 
--- 触发事件
+-- 触发事件,此时时的参数会补在绑定时的参数后之后
 function M.Broadcast(eventName, ...)
     local listeners = M.events[eventName]
     if not listeners then return end
